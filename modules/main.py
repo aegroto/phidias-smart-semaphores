@@ -19,8 +19,19 @@ from modules.environment import *
 # ---------------------------------------------------------------------
 class main(Agent):
     def main(self):
-        states_updater = SemaphoresStateUpdater(["Sem1", "Sem2"])
+        states_updater = SemaphoresStateUpdater(["Sem1", "Sem2"], 1.0, 10)
 
+        # Debug procedures
+        populate()['all'] >> [
+            show_line("Populating the road..."),
+            +INCOMING_CAR(0)[{'to': 'Sem1'}]
+        ]
+
+        cars_at(SEMID)['all'] / car(C, SEMID) >> [
+            show_line(C)
+        ]
+
+        # Simulation procedures
         simulate() >> [
             show_line("Starting simulation..."),
             +active(),
@@ -32,7 +43,12 @@ class main(Agent):
             -active()
         ]
 
-        +UPDATE_SEMSTATE(SEMID) / active() >> [
+        +SWITCH_SEMSTATE(SEMID) / (active()) >> [
+            show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to switch its state"),
+            +SWITCH_SEMSTATE()[{'to': SEMID}]
+        ]
+
+        +UPDATE(SEMID) / active() >> [
             show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to update its state"),
-            +UPDATE_SEMSTATE()[{'to': SEMID}]
+            +UPDATE()[{'to': SEMID}],
         ]
