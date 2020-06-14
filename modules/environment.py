@@ -20,6 +20,7 @@ class active(SingletonBelief): pass
 
 class SWITCH_SEMSTATE(Reactor): pass
 class INCOMING_CAR(Reactor): pass
+class SPAWN_CAR(Reactor): pass
 class UPDATE(Reactor): pass
 
 class next_state(Procedure): pass

@@ -12,11 +12,14 @@ from phidias.Agent import *
 
 from modules.environment import *
 
-class SemaphoresStateUpdater(Sensor):
-    def on_start(self, semaphore_ids, tick_frequency, state_change_ticks):
+class RoadStateUpdater(Sensor):
+    def on_start(self, simple_roadpoint_ids, semaphore_ids, tick_frequency, state_change_ticks):
         self.semaphore_ids = semaphore_ids.value
         self.tick_frequency = tick_frequency.value
         self.state_change_ticks = state_change_ticks.value
+
+        self.roadpoint_ids = simple_roadpoint_ids.value
+        self.roadpoint_ids.extend(self.semaphore_ids)
 
         # Set initial semaphore state
         for semid in self.semaphore_ids:
@@ -36,12 +39,14 @@ class SemaphoresStateUpdater(Sensor):
             # Tick sleep
             time.sleep(self.tick_frequency)
 
+            # print(" -- UPDATE --")
+
             self.current_state_ticks += 1
             if self.current_state_ticks == self.state_change_ticks:
                 for semid in self.semaphore_ids:
                     self.assert_belief(SWITCH_SEMSTATE(semid))
 
                 self.current_state_ticks = 0
-            else:
-                for semid in self.semaphore_ids:
-                    self.assert_belief(UPDATE(semid))
+
+            for roadpoint_id in self.roadpoint_ids:
+                self.assert_belief(UPDATE(roadpoint_id))

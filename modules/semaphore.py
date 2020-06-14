@@ -52,8 +52,8 @@ class Semaphore(RoadPoint):
         #     move_cars(),
         # ]
 
-        # move_cars(SEMID) / (green(SEMID) & car(C, SEMID)) >> [
-        #     show_line("[", self.name(), "] Green state, moving cars"),
-        # ]
+        move_cars() / (red(SEMID)) >> [
+            # This should not do anything
+        ]
 
         super().main()
