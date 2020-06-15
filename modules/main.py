@@ -48,12 +48,11 @@ class main(Agent):
 
         +SWITCH_SEMSTATE(SEMID) / (active()) >> [
             show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to switch its state"),
-            +SWITCH_SEMSTATE()[{'to': SEMID.value}]
+            +SWITCH_SEMSTATE()[{'to': SEMID}]
         ]
 
         +UPDATE(SEMID) / active() >> [
             show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to update its state"),
-            # show_line(SEMID),
             +UPDATE()[{'to': SEMID}],
         ]
 
