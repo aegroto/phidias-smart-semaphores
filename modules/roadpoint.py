@@ -41,7 +41,7 @@ class RoadPoint(Agent):
             +INCOMING_CAR(C)[{'to': self.next_location}],
         ]
 
-class TargetRoadPoint(RoadPoint):
+class GoalRoadPoint(RoadPoint):
     def __init__(self, name):
         super().__init__(name, None)
 

@@ -14,13 +14,13 @@ from modules.environment import *
 
 from modules.main import main
 from modules.semaphore import Semaphore
-from modules.roadpoint import RoadPoint, TargetRoadPoint
+from modules.roadpoint import RoadPoint, GoalRoadPoint
 
 # start the actors
 RoadPoint("A", "Sem1").start()
 Semaphore("Sem1", "Sem2").start()
 Semaphore("Sem2", "B").start()
-TargetRoadPoint("B").start()
+GoalRoadPoint("B").start()
 
 main().start()
 
