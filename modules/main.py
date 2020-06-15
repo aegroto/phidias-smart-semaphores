@@ -20,9 +20,6 @@ from modules.car_spawner import *
 # ---------------------------------------------------------------------
 class main(Agent):
     def main(self):
-        state_updater = RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 1.0, 10)
-        car_spawner = CarSpawner(0.1, 0.1, "A")
-
         # Debug procedures
         # populate()['all'] >> [
         #     show_line("Populating the road..."),
@@ -37,8 +34,8 @@ class main(Agent):
         simulate() >> [
             show_line("Starting simulation..."),
             +active(),
-            state_updater.start,
-            car_spawner.start
+            RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 1.0, 10).start,
+            CarSpawner(0.1, 0.1, "A").start
         ]
 
         stop() >> [
@@ -46,14 +43,14 @@ class main(Agent):
             -active()
         ]
 
-        +SWITCH_SEMSTATE(SEMID) / (active()) >> [
-            show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to switch its state"),
-            +SWITCH_SEMSTATE()[{'to': SEMID}]
+        +SWITCH_SEMSTATE(SEMID) / (active() & eq(SEMID, SEMID)) >> [
+            # show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to switch its state"),
+            +SWITCH_SEMSTATE(SEMID)[{'to': SEMID}]
         ]
 
-        +UPDATE(SEMID) / active() >> [
-            show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to update its state"),
-            +UPDATE()[{'to': SEMID}],
+        +UPDATE(SEMID) / (active() & eq(SEMID, SEMID)) >> [
+            # show_line("[", self.name(), "] Communicating semaphore ", SEMID, " to update its state"),
+            +UPDATE(SEMID)[{'to': SEMID}],
         ]
 
         +SPAWN_CAR(C, L) / active() >> [

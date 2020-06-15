@@ -25,7 +25,7 @@ class RoadPoint(Agent):
         ]
 
         # Update loop 
-        +UPDATE()[{'from': SENDER}] >> [
+        +UPDATE(SEMID)[{'from': SENDER}] / eq(SEMID, self.name())>> [
             # show_line("[", self.name(), "] Running update tick (sender: ", SENDER, ")"),
             move_cars(),
         ]

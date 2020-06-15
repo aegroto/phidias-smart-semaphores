@@ -41,7 +41,7 @@ class Semaphore(RoadPoint):
             +green(SEMID)
         ]
 
-        +SWITCH_SEMSTATE()[{'from': SENDER}] >> [
+        +SWITCH_SEMSTATE(SEMID)[{'from': SENDER}] / (eq(SEMID, self.name()))>> [
             show_line("[", self.name(), "] Updating semaphore state (sender: ", SENDER, ")"),
             next_state(self.name())
         ]
