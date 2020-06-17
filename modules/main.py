@@ -30,6 +30,9 @@ class main(Agent):
             show_line(C),
         ]
 
+        # Goals
+        on_destination(C) << (car(C, L) & eq(L, 'B'))
+
         # Simulation procedures
         simulate() >> [
             show_line("Starting simulation..."),

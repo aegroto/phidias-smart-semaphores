@@ -12,6 +12,8 @@ from phidias.Agent import *
 
 class car(Belief): pass
 
+class on_destination(Goal): pass
+
 class sem_state(SingletonBelief): pass
 
 class active(SingletonBelief): pass
