@@ -26,16 +26,16 @@ class main(Agent):
         #     +INCOMING_CAR(0)[{'to': 'Sem1'}]
         # ]
 
-        # cars_at(SEMID)['all'] / car(C, SEMID) >> [
-        #     show_line(C),
-        # ]
+        cars_at(SEMID)['all'] / car(C, SEMID) >> [
+            show_line(C),
+        ]
 
         # Simulation procedures
         simulate() >> [
             show_line("Starting simulation..."),
             +active(),
             RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 1.0, 10).start,
-            CarSpawner(0.1, 0.1, "A").start
+            CarSpawner(0.1, 1.0, "A").start
         ]
 
         stop() >> [
@@ -55,5 +55,16 @@ class main(Agent):
 
         +SPAWN_CAR(C, L) / active() >> [
             show_line("[", self.name(), "] Spawning car ", C, " at location ", L),
-            +INCOMING_CAR(C)[{'to': L}],
+            # +INCOMING_CAR(C)[{'to': L}],
+            +car(C, L)
+        ]
+
+        +MOVE_CARS_TO(L)[{'from': SENDER}]  >> [
+            show_line("[", self.name(), "] Movings cars from ", SENDER, " to ", L),
+            move_cars(SENDER, L)
+        ]
+
+        move_cars(SENDER, L)['all'] / car(C, SENDER) >> [
+            -car(C, SENDER),
+            +car(C, L)
         ]

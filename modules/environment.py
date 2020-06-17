@@ -12,9 +12,7 @@ from phidias.Agent import *
 
 class car(Belief): pass
 
-class red(Belief): pass
-class yellow(Belief): pass
-class green(Belief): pass
+class sem_state(SingletonBelief): pass
 
 class active(SingletonBelief): pass
 
@@ -22,6 +20,7 @@ class SWITCH_SEMSTATE(Reactor): pass
 class INCOMING_CAR(Reactor): pass
 class SPAWN_CAR(Reactor): pass
 class UPDATE(Reactor): pass
+class MOVE_CARS_TO(Reactor): pass
 
 class next_state(Procedure): pass
 class move_car(Procedure): pass

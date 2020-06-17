@@ -19,10 +19,14 @@ class RoadPoint(Agent):
         self.next_location = next_location
 
     def main(self):
-        +INCOMING_CAR(C)[{'from': SENDER}] >> [
-            # show_line("[", self.name(), "] Incoming car (sender: ", SENDER, ")"),
-            +car(C, self.name())
-        ]
+        # cars_at()['all'] / car(C) >> [
+        #     show_line(C),
+        # ]
+
+        # +INCOMING_CAR(C)[{'from': SENDER}] >> [
+        #     show_line("[", self.name(), "] Incoming car ", C, " (sender: ", SENDER, ")"),
+        #     +car(C)
+        # ]
 
         # Update loop 
         +UPDATE(SEMID)[{'from': SENDER}] / eq(SEMID, self.name())>> [
@@ -30,16 +34,19 @@ class RoadPoint(Agent):
             move_cars(),
         ]
 
-        move_cars() / car(C, self.name()) >> [
-            # show_line("[", self.name(), "] Moving cars"),
-            move_car(C)
+        move_cars()['all'] >> [ # / car(C) >> [
+            show_line("[", self.name(), "] Moving cars"),
+            +MOVE_CARS_TO(self.next_location)[{'to': 'main'}]
+            # -car(C, self.name())[{'to': 'main'}],
+            # +car(C, self.next_location)[{'to': 'main'}]
         ]
 
-        move_car(C) / (car(C, L))>> [
-            show_line("[", self.name(), "] Moving car (", C, ",", L, ") to ", self.next_location),
-            -car(C, L),
-            +INCOMING_CAR(C)[{'to': self.next_location}],
-        ]
+        # move_car(C) >> [
+        #     show_line("[", self.name(), "] Moving car ", C, " to ", self.next_location),
+        #     -car(C),
+        #     +INCOMING_CAR(C)[{'to': self.next_location}],
+        #     # +car(C)[{'to': self.next_location}],
+        # ]
 
 class GoalRoadPoint(RoadPoint):
     def __init__(self, name):

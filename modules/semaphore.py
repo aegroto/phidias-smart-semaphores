@@ -16,43 +16,32 @@ from modules.roadpoint import RoadPoint
 class Semaphore(RoadPoint):
     def main(self):
         # Change state
-        next_state(SEMID) / (red(SEMID)) >> [
+        next_state(SEMID) / (sem_state("red")) >> [
             show_line("[", self.name(), "] Next state is green"),
-            -red(SEMID),
-            +green(SEMID)
+            sem_state("green")
         ]
 
-        next_state(SEMID) / (green(SEMID)) >> [
+        next_state() / (sem_state("green")) >> [
             show_line("[", self.name(), "] Next state is yellow"),
-            -green(SEMID),
-            +yellow(SEMID)
+            sem_state("yellow")
         ]
 
-        next_state(SEMID) / (yellow(SEMID)) >> [
+        next_state() / (sem_state("yellow")) >> [
             show_line("[", self.name(), "] Next state is red"),
-            -yellow(SEMID),
-            +red(SEMID)
+            sem_state("red")
         ]
 
-        next_state(SEMID) >> [
+        next_state() >> [
             show_line("[", self.name(), "] Turning on to: green"),
-            -red(SEMID),
-            -yellow(SEMID),
-            +green(SEMID)
+            sem_state("green")
         ]
 
         +SWITCH_SEMSTATE(SEMID)[{'from': SENDER}] / (eq(SEMID, self.name()))>> [
             show_line("[", self.name(), "] Updating semaphore state (sender: ", SENDER, ")"),
-            next_state(self.name())
+            next_state()
         ]
 
-        # # Update loop 
-        # +UPDATE()[{'from': SENDER}] >> [
-        #     show_line("[", self.name(), "] Running update tick (sender: ", SENDER, ")"),
-        #     move_cars(),
-        # ]
-
-        move_cars() / (red(SEMID)) >> [
+        move_cars()['all'] / (sem_state("red")) >> [
             # This should not do anything
         ]
 

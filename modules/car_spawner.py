@@ -26,6 +26,9 @@ class CarSpawner(Sensor):
         self.running = False
 
     def sense(self):
+        # for i in range(0, 100):
+        #     self.__spawn_car()
+
         while self.running:
             time.sleep(self.tick_time)
 
