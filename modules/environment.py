@@ -33,6 +33,7 @@ class next_state(Procedure): pass
 class move_car(Procedure): pass
 class move_cars(Procedure): pass
 class send_congestion_notification(Procedure): pass
+class send_decongestion_notification(Procedure): pass
 
 class stop(Procedure): pass
 class simulate(Procedure): pass
@@ -40,5 +41,6 @@ class simulate(Procedure): pass
 # Debug
 class populate(Procedure): pass
 class cars_at(Procedure): pass
+class sems(Procedure): pass
 
 def_vars("SENDER", "SEMID", "C", "L")

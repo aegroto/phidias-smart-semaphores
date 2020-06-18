@@ -32,5 +32,9 @@ PHIDIAS.assert_belief(sem("Sem2"))
 
 main().start()
 
+# PHIDIAS.assert_belief(active("main"))
+# PHIDIAS.assert_belief(congestion("Sem1"))
+# PHIDIAS.assert_belief(congestion("Sem2"))
+
 # run the engine shell
 PHIDIAS.shell(globals())
