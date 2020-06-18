@@ -11,6 +11,11 @@ from phidias.Lib import *
 from phidias.Agent import *
 
 class car(Belief): pass
+class sem(Belief):pass
+class roadpoint(Belief):pass
+
+class congestion(Belief): pass
+class standby(Belief): pass
 
 class on_destination(Goal): pass
 
@@ -27,6 +32,7 @@ class MOVE_CARS_TO(Reactor): pass
 class next_state(Procedure): pass
 class move_car(Procedure): pass
 class move_cars(Procedure): pass
+class send_congestion_notification(Procedure): pass
 
 class stop(Procedure): pass
 class simulate(Procedure): pass

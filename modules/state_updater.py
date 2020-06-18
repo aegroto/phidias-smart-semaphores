@@ -39,8 +39,6 @@ class RoadStateUpdater(Sensor):
             # Tick sleep
             time.sleep(self.tick_frequency)
 
-            # print(" -- UPDATE --")
-
             self.current_state_ticks += 1
             if self.current_state_ticks == self.state_change_ticks:
                 for semid in self.semaphore_ids:

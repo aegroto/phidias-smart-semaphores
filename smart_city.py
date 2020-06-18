@@ -22,6 +22,14 @@ Semaphore("Sem1", "Sem2").start()
 Semaphore("Sem2", "B").start()
 GoalRoadPoint("B").start()
 
+PHIDIAS.assert_belief(roadpoint("A"))
+PHIDIAS.assert_belief(roadpoint("Sem1"))
+PHIDIAS.assert_belief(roadpoint("Sem2"))
+PHIDIAS.assert_belief(roadpoint("B"))
+
+PHIDIAS.assert_belief(sem("Sem1"))
+PHIDIAS.assert_belief(sem("Sem2"))
+
 main().start()
 
 # run the engine shell
