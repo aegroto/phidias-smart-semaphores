@@ -35,7 +35,7 @@ class RoadPoint(Agent):
         ]
 
         move_cars()['all'] >> [ # / car(C) >> [
-            show_line("[", self.name(), "] Moving cars"),
+            # show_line("[", self.name(), "] Moving cars"),
             +MOVE_CARS_TO(self.next_location)[{'to': 'main'}]
             # -car(C, self.name())[{'to': 'main'}],
             # +car(C, self.next_location)[{'to': 'main'}]
