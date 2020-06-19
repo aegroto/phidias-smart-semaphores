@@ -49,4 +49,4 @@ class populate(Procedure): pass
 class cars_at(Procedure): pass
 class sems(Procedure): pass
 
-def_vars("SENDER", "SEMID", "C", "L", "LOC", "N")
+def_vars("SENDER", "SEMID", "C", "L", "LOC", "N", "CONGESTION_LEVEL")

@@ -40,13 +40,13 @@ class main(Agent):
         on_destination(C) << (car(C, L) & eq(L, 'B'))
 
         # Simulation 
-        simulate() >> [
+        simulate(CONGESTION_LEVEL) >> [
             show_line("Starting simulation..."),
             +active(self.name()),
             RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 0.3, 10).start,
             CarSpawner(0.1, 0.15, "A").start,
 
-            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, 0.15).start,
+            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, CONGESTION_LEVEL).start,
             SimulationTimer(60).start
         ]
 
