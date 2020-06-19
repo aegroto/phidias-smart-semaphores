@@ -22,6 +22,7 @@ class on_destination(Goal): pass
 class sem_state(SingletonBelief): pass
 
 class active(SingletonBelief): pass
+class TIMEOUT(SingletonBelief): pass
 
 class SWITCH_SEMSTATE(Reactor): pass
 class INCOMING_CAR(Reactor): pass
@@ -38,9 +39,11 @@ class send_decongestion_notification(Procedure): pass
 class stop(Procedure): pass
 class simulate(Procedure): pass
 
+class extract_cars_from(Procedure): pass
+
 # Debug
 class populate(Procedure): pass
 class cars_at(Procedure): pass
 class sems(Procedure): pass
 
-def_vars("SENDER", "SEMID", "C", "L")
+def_vars("SENDER", "SEMID", "C", "L", "LOC", "N")

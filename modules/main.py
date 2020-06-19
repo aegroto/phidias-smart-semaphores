@@ -15,6 +15,7 @@ from modules.state_updater import *
 from modules.environment import *
 from modules.car_spawner import *
 from modules.congestion_sensor import *
+from modules.timer import *
 
 # ---------------------------------------------------------------------
 # Agent 'main'
@@ -38,19 +39,41 @@ class main(Agent):
         # Goals
         on_destination(C) << (car(C, L) & eq(L, 'B'))
 
-        # Simulation procedures
+        # Simulation 
         simulate() >> [
             show_line("Starting simulation..."),
             +active(self.name()),
             RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 0.3, 10).start,
-            CarSpawner(0.1, 0.3, "A").start,
+            CarSpawner(0.1, 0.15, "A").start,
 
-            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, 0.5).start,
+            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, 1.5).start,
+            SimulationTimer(60).start
+        ]
+
+        +TIMEOUT("ON") >> [
+            show_line("Timeout"),
+            stop()
         ]
 
         stop() >> [
             show_line("Stopping simulation..."),
-            -active(self.name())
+            -active(self.name()),
+            show_line("# --- RESULTS --- #"),
+            extract_cars_from("B")
+        ]
+
+        extract_cars_from(LOC) >> [
+            extract_cars_from(LOC, 0)
+        ]
+
+        extract_cars_from(LOC, N) / (car(C, L) & eq(L, LOC)) >> [
+            "N = N + 1",
+            -car(C, L),
+            extract_cars_from(LOC, N)
+        ]
+
+        extract_cars_from(LOC, N) >> [
+            show_line("Cars extracted from ", LOC , ": ", N)
         ]
 
         # Congestion system 
