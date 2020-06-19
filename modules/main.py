@@ -46,7 +46,7 @@ class main(Agent):
             RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 0.3, 10).start,
             CarSpawner(0.1, 0.15, "A").start,
 
-            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, 1.5).start,
+            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, 0.15).start,
             SimulationTimer(60).start
         ]
 
@@ -82,7 +82,7 @@ class main(Agent):
         ]
 
         +congestion(L) / (active(self.name()) & sem(SEMID)) >> [
-            show_line("[", self.name(), " - congestion] Detected congestion at ", L, " semaphores were in standby, restoring cycle"),
+            show_line("[", self.name(), " - congestion] Detected congestion at ", L, ", semaphores were in standby, restoring cycle"),
             send_congestion_notification()
         ]
 
@@ -97,12 +97,12 @@ class main(Agent):
 
         send_decongestion_notification()['all'] / (active(self.name()) & sem(SEMID)) >> [
             show_line("[", self.name(), " - congestion] Sending standby notification to ", SEMID),
-            +standby(SEMID)[{'to': SEMID}]
+            +LOW_TRAFFIC(SEMID)[{'to': SEMID}]
         ]
 
         send_congestion_notification()['all'] / (active(self.name()) & sem(SEMID)) >> [
             show_line("[", self.name(), " - congestion] Sending cycle restore notification to ", SEMID),
-            -standby(SEMID)[{'to': SEMID}]
+            +CONGESTION(SEMID)[{'to': SEMID}]
         ]
 
         # Update loops

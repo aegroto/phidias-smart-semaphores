@@ -30,6 +30,9 @@ class SPAWN_CAR(Reactor): pass
 class UPDATE(Reactor): pass
 class MOVE_CARS_TO(Reactor): pass
 
+class CONGESTION(Reactor): pass
+class LOW_TRAFFIC(Reactor): pass
+
 class next_state(Procedure): pass
 class move_car(Procedure): pass
 class move_cars(Procedure): pass

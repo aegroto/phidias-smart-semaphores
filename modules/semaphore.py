@@ -41,13 +41,15 @@ class Semaphore(RoadPoint):
             +congestion(self.name())
         ]
 
-        +standby(self.name())[{'from': SENDER}] >> [
+        +LOW_TRAFFIC(self.name())[{'from': SENDER}] >> [
             show_line("[", self.name(), "] There's no congestion, fixing state to yellow"),
+            +standby(self.name()),
             +sem_state("yellow")
         ]
 
-        -standby(self.name())[{'from': SENDER}] >> [
+        +CONGESTION(self.name())[{'from': SENDER}] >> [
             show_line("[", self.name(), "] Congestion detected, restoring cycle"),
+            -standby(self.name()),
             # sem_state("yellow")
         ]
 
