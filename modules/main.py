@@ -124,7 +124,7 @@ class main(Agent):
         ]
 
         +MOVE_CARS_TO(L)[{'from': SENDER}] / car(C, SENDER) >> [
-            show_line("[", self.name(), " - cars] Movings cars from ", SENDER, " to ", L),
+            show_line("[", self.name(), " - cars] Moving cars from ", SENDER, " to ", L),
             move_cars(SENDER, L)
         ]
 
