@@ -40,14 +40,23 @@ class main(Agent):
         on_destination(C) << (car(C, L) & eq(L, 'B'))
 
         # Simulation 
-        simulate(CONGESTION_LEVEL) >> [
+        simulate_without_sensors(STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS, CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, SIMULATION_TIME) >> [
             show_line("Starting simulation..."),
             +active(self.name()),
-            RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], 0.3, 10).start,
-            CarSpawner(0.1, 0.15, "A").start,
+            RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS).start,
+            CarSpawner(CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, "A").start,
 
-            CongestionSensorsUpdater(["Sem1", "Sem2"], 2.0, 5.0, CONGESTION_LEVEL).start,
-            SimulationTimer(60).start
+            SimulationTimer(SIMULATION_TIME).start
+        ]
+
+        simulate_with_sensors(STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS, CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, SIMULATION_TIME, MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL, CONGESTION_LEVEL) >> [
+            show_line("Starting simulation..."),
+            +active(self.name()),
+            RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS).start,
+            CarSpawner(CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, "A").start,
+
+            CongestionSensorsUpdater(["Sem1", "Sem2"], MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL, CONGESTION_LEVEL).start,
+            SimulationTimer(SIMULATION_TIME).start
         ]
 
         +TIMEOUT("ON") >> [

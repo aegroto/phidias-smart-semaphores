@@ -41,6 +41,8 @@ class send_decongestion_notification(Procedure): pass
 
 class stop(Procedure): pass
 class simulate(Procedure): pass
+class simulate_without_sensors(Procedure): pass
+class simulate_with_sensors(Procedure): pass
 
 class extract_cars_from(Procedure): pass
 
@@ -49,4 +51,18 @@ class populate(Procedure): pass
 class cars_at(Procedure): pass
 class sems(Procedure): pass
 
-def_vars("SENDER", "SEMID", "C", "L", "LOC", "N", "CONGESTION_LEVEL")
+def_vars(
+    "SENDER", "SEMID", "C", "L", "LOC", "N",
+
+    # Simulation parameters
+    "STATE_UPDATE_TIME_INTERVAL",
+    "SEM_STATE_CHANGE_TICKS",
+    "CAR_SPAWN_INTERVAL",
+    "CAR_SPAWN_PROBABILITY",
+    "SIMULATION_TIME",
+
+    # Congestion sensors parameters (not necessary if simulating without any traffic detection)
+    "MIN_SENSORS_DETECT_TIME_INTERVAL",
+    "MAX_SENSORS_DETECT_TIME_INTERVAL",
+    "CONGESTION_LEVEL",
+)
