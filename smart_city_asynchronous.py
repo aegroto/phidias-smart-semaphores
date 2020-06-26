@@ -30,7 +30,8 @@ def_vars(
     # Congestion sensors parameters (not necessary if simulating without any traffic detection)
     "MIN_SENSORS_DETECT_TIME_INTERVAL",
     "MAX_SENSORS_DETECT_TIME_INTERVAL",
-    "CONGESTION_LEVEL",
+    "P1SENS_CONGESTION_PROB",
+    "P2SENS_CONGESTION_PROB",
 )
 
 # ---------------------------------------------------------------------
@@ -38,12 +39,6 @@ def_vars(
 # ---------------------------------------------------------------------
 class main(Agent):
     def main(self):
-        # Debug procedures
-        # populate()['all'] >> [
-        #     show_line("Populating the road..."),
-        #     +INCOMING_CAR(0)[{'to': 'Sem1'}]
-        # ]
-
         cars_at(SEMID)['all'] / car(C, SEMID) >> [
             show_line(C),
         ]
@@ -64,14 +59,14 @@ class main(Agent):
 
             SimulationTimer(SIMULATION_TIME).start
         ]
-
-        simulate_with_sensors(STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS, CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, SIMULATION_TIME, MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL, CONGESTION_LEVEL) >> [
+        
+        simulate_with_sensors(STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS, CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, SIMULATION_TIME, MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL, P1SENS_CONGESTION_PROB, P2SENS_CONGESTION_PROB) >> [
             show_line("Starting simulation..."),
             +active(self.name()),
             RoadStateUpdater(["A", "B"], ["Sem1", "Sem2"], STATE_UPDATE_TIME_INTERVAL, SEM_STATE_CHANGE_TICKS).start,
             CarSpawner(CAR_SPAWN_INTERVAL, CAR_SPAWN_PROBABILITY, "A").start,
 
-            CongestionSensorsUpdater(["Sem1", "Sem2"], MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL, CONGESTION_LEVEL).start,
+            AsynchronousCongestionSensorsUpdater(["Sem1", "Sem2"], [P1SENS_CONGESTION_PROB, P2SENS_CONGESTION_PROB], MIN_SENSORS_DETECT_TIME_INTERVAL, MAX_SENSORS_DETECT_TIME_INTERVAL).start,
             SimulationTimer(SIMULATION_TIME).start
         ]
 
