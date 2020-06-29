@@ -153,7 +153,7 @@ class main(Agent):
             move_cars(SENDER, L)
         ]
 
-        move_cars(SENDER, L)['all'] / car(C, SENDER) >> [
+        move_cars(SENDER, L) / car(C, SENDER) >> [
             -car(C, SENDER),
             +car(C, L)
         ]
